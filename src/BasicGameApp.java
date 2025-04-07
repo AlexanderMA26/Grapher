@@ -19,6 +19,7 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -70,7 +71,7 @@ public class BasicGameApp implements Runnable {
       return (y);
    }*/
    public  double lineTaxi(double b){
-      returnValue = (b*(-0.004*b));
+      returnValue = (b*b*0.01);
       return (returnValue);
    }
 
@@ -85,7 +86,7 @@ public class BasicGameApp implements Runnable {
       
       setUpGraphics();
 
-      line= new Point[1000];
+
       line2 = new Point[1000];
       line3 = new Point[1000];// construct an array to hold points
 
@@ -93,9 +94,9 @@ public class BasicGameApp implements Runnable {
       for(int a=0 ;a<1000; a++){
         //this is where we define the lines. To be clear, the shift right and -500 refer to where the parabola should start to be drawn
 
-         line2[a] = new Point(a-500,lineTaxi(a+shiftright-1000));
-         line3[a] = new Point(a , a );
-         line[a]= new Point(a, (a*a));
+         line2[a] = new Point(a-500,lineTaxi(a+shiftright-1000), 2*(a-500));
+         line3[a] = new Point(a , a ,2);
+
 
 
       }
@@ -160,62 +161,40 @@ public class BasicGameApp implements Runnable {
       g.setColor(new Color(250,150,0));
 
 
-      for(int a= 0;a<line2.length;a++){
-         //this is where we draw the parabola/ function we are looking at and where we to the translation to put it in the center of the screen
-        //g.fillRect((int)(line2[a].x + shiftright),(int)(line2[a].y +shiftdown),4,4);
-        // if ((line2[a].y/line2[a].x)<(a)){
-         //   g.setColor(new Color(37, 189, 121));
-        // }
-        // this is the if statement that checks fwhether the function is even and printsor  that information to the screen
-/*
-         if (line2[a].x == -line2[a].x) {
-            even= true;
-            if (even==true) {
-               g.setColor(Color.pink);
-               for(a = 0; a<line2.length; a++) {
-                  g.fillRect((int) (line2[a].x + shiftright), (int) (line2[a].y + shiftdown), 4, 4);
-               }
-               g.setFont(myfont);
-               g.drawString("This Function Is Even",200,300);
 
-            } else if (even==false) {
-               g.setColor(Color.cyan);
-               for(a = 0; a<line2.length; a++) {
-                  g.fillRect((int) (line2[a].x + shiftright), (int) (line2[a].y + shiftdown), 4, 4);
-               }
-               g.setFont(myfont);
-               g.drawString("This Function Is Odd",200,300);
-            }
-
-
-
-
-
-
-
-           }
-
-      */
-         }
       //For next time: add smoother points and more automatic color switches
       for (int i = 0; i < line2.length-1; i++) {
+          int d = Math.abs(line2[i].d);
+
          int x1 = (int) (line2[i].x + shiftright);
          int y1 = (int) (line2[i].y + shiftdown);
          int x2 = (int) (line2[i + 1].x + shiftright);
          int y2 = (int) (line2[i + 1].y + shiftdown);
-
+         int min;
          int diffy= y2-y1;
          int diffx = x2-x1;
+         boolean isOn = false;
 
-         int slope = diffy/diffx;
+         int slope = Math.abs(diffy/diffx);
 
-         if (Math.abs(slope) <= 0.5){
-            g.setColor(Color.RED);
-         } else if (Math.abs(slope) <=2) {
-            g.setColor(Color.MAGENTA);
-         } else if (Math.abs(slope) <=5) {
-            g.setColor(Color.BLUE);
+
+//         if ((line2[i].y < 350) & (line2[i].y > -350) & (line2[i].x > -500) & (line2[i].x < 500)){
+//            isOn=true;
+//            }
+//         if ((isOn) && (line2[i].y > line2[i+1].y) & (line2[i].y > line2[i-1].y)){
+//            min = (int) line2[i].x;
+//            g.setColor(Color.GREEN);
+//            g.drawLine(min, 0, min+10,  800);
+//
+//         }
+
+
+         if (d < 250){
+            g.setColor(new Color(255, 0,0));
+         } else {
+            g.setColor(new Color(255/d, 0,0));
          }
+
          g.drawLine(x1, y1, x2, y2);
 
          
