@@ -73,7 +73,7 @@ public class BasicGameApp implements Runnable {
    }*/
    public  double lineTaxi(double b){
 
-      returnValue = (b*(b*0.01));
+      returnValue = (Math.sin(b*0.01)*100);
       return (returnValue);
    }
 
@@ -120,9 +120,9 @@ public class BasicGameApp implements Runnable {
 
       //for the moment we will loop things forever.
 
-         moveThings();  //move all the game objects
-         render();  // paint the graphics
-         pause(20); // sleep for 10 ms
+      moveThings();  //move all the game objects
+      render();  // paint the graphics
+      pause(20); // sleep for 10 ms
 
    }
 
@@ -152,10 +152,10 @@ public class BasicGameApp implements Runnable {
       g.clearRect(0, 0, WIDTH, HEIGHT);
 
 
-      // the next two lines of code draw the axis lines
-//      g.drawLine(0,(int)shiftdown,1600,(int)shiftdown);
-//      g.drawLine((int)shiftright,0,(int)shiftright,700);
-      // sets default color to orange
+       //the next two lines of code draw the axis lines
+      g.drawLine(0,(int)shiftdown,1600,(int)shiftdown);
+      g.drawLine((int)shiftright,0,(int)shiftright,700);
+       //sets default color to orange
 
 
       //For next time: add smoother points and more automatic color switches
@@ -163,32 +163,29 @@ public class BasicGameApp implements Runnable {
 
          if (line2[i].x > -800 && line2[i].x < 700) {
 
-
-
-               int x1 = (int) (line2[i].x + shiftright);
-               int y1 = (int) (line2[i].y + shiftdown);
-               int x2 = (int) (line2[i + 1].x + shiftright);
-               int y2 = (int) (line2[i + 1].y + shiftdown);
-               int min;
-               int diffy = y2 - y1;
-               int diffx = x2 - x1;
-
-
-               int slope = Math.abs(diffy / diffx);
-               boolean isGrea;
-
-
             double prevY = line2[i - 1].y;
-            double currY = line2[i].y;
             double nextY = line2[i + 1].y;
 
+            int x1 = (int) (line2[i].x + shiftright);
+            int y1 = (int) (line2[i].y + shiftdown);
+            int x2 = (int) (line2[i + 1].x + shiftright);
+            int y2 = (int) (line2[i + 1].y + shiftdown);
+            int min;
+            double currY = line2[i].y;
+            int diffy = y2 - y1;
+            int diffx = x2 - x1;
+
+
+            int slope = Math.abs(diffy / diffx);
+            boolean isGrea;
+
+
+
             if (currY > prevY && currY > nextY) {
-               // Local Maximum
                g.setColor(Color.BLUE);
                g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
             }
             else if (currY < prevY && currY < nextY) {
-               // Local Minimum
                g.setColor(Color.GREEN);
                g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
             }
@@ -197,13 +194,13 @@ public class BasicGameApp implements Runnable {
 
 
 
-               if (slope > 1){
-                  g.setColor(new Color((255/slope)*2, 0, 0));
-               }else{
-                  g.setColor(Color.RED);
-               }
+            if (slope > 1){
+               g.setColor(new Color((255/slope)*2, 0, 0));
+            }else{
+               g.setColor(Color.RED);
+            }
 
-               g.drawLine(x1, y1, x2, y2);
+            g.drawLine(x1, y1, x2, y2);
 
          }
       /*g.setColor(new Color(0,200,100));
