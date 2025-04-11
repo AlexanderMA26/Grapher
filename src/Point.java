@@ -8,8 +8,6 @@ public class Point {
         y=yp;
         d=dv;
 
-
-
     }
 
 }
