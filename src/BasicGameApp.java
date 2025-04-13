@@ -180,11 +180,10 @@ public class BasicGameApp implements Runnable {
             double der2 = (line2[i].y-prevY)/(line2[i].x-prevX);
 
             double secderiv= (nextY-(2*line2[i].y)+prevY)/((line2[i].x-prevX)*(nextX-line2[i].x));
-            System.out.println(secderiv);
+            
             if (secderiv*negsecderiv <= 0){
-               System.out.println("Found the inflection point");
                g.setColor(Color.ORANGE);
-               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
+               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), (int)(line2[i].y+shiftdown));
             }
             negsecderiv = secderiv;
 
@@ -204,11 +203,11 @@ public class BasicGameApp implements Runnable {
 
             if (currY > prevY && currY > nextY) {
                g.setColor(Color.BLUE);
-               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
+               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
             }
             else if (currY < prevY && currY < nextY) {
                g.setColor(Color.GREEN);
-               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
+               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
             }
 
 
