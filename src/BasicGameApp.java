@@ -66,14 +66,13 @@ public class BasicGameApp implements Runnable {
       new Thread(ex).start();                 //creates a threads & starts up the code in the run( ) method
    }
 
-
-   /*public  double sinCar(double a,double b){
-      =a*b;
-      return (y);
-   }*/
    public  double lineTaxi(double b){
 
-      returnValue = (Math.sin(b*0.01)*100);
+      //Math.sin(b*0.05)*50
+      //b*(b*0.03)
+      //-b*b*(b*0.0005)
+
+      returnValue = (Math.sin(b*0.05)*50);
       return (returnValue);
    }
 
@@ -90,14 +89,14 @@ public class BasicGameApp implements Runnable {
 
 
       line2 = new Point[1000];
-      line3 = new Point[1000];// construct an array to hold points
+      //line3 = new Point[1000];// construct an array to hold points
 
 
       for(int a=0 ;a<1000; a++){
          //this is where we define the lines. To be clear, the shift right and -500 refer to where the parabola should start to be drawn
 
          line2[a] = new Point(a-500,lineTaxi(a+shiftright-1000), 2*a);
-         line3[a] = new Point(a , a ,2);
+         //line3[a] = new Point(a , a ,2);
 
 
 
@@ -118,7 +117,6 @@ public class BasicGameApp implements Runnable {
    // this is the code that plays the game after you set things up
    public void run() {
 
-      //for the moment we will loop things forever.
 
       moveThings();  //move all the game objects
       render();  // paint the graphics
@@ -156,6 +154,7 @@ public class BasicGameApp implements Runnable {
       g.drawLine(0,(int)shiftdown,1600,(int)shiftdown);
       g.drawLine((int)shiftright,0,(int)shiftright,700);
        //sets default color to orange
+      double negsecderiv = 1;
 
 
       //For next time: add smoother points and more automatic color switches
@@ -165,19 +164,41 @@ public class BasicGameApp implements Runnable {
 
             double prevY = line2[i - 1].y;
             double nextY = line2[i + 1].y;
+            double prevX = line2[i-1].x;
+            double nextX = line2[i+1].x;
 
             int x1 = (int) (line2[i].x + shiftright);
             int y1 = (int) (line2[i].y + shiftdown);
-            int x2 = (int) (line2[i + 1].x + shiftright);
-            int y2 = (int) (line2[i + 1].y + shiftdown);
+            int x2 = (int) (line2[i - 1].x + shiftright);
+            int y2 = (int) (line2[i - 1].y + shiftdown);
             int min;
             double currY = line2[i].y;
-            int diffy = y2 - y1;
+            int diffy = y2-y1;
             int diffx = x2 - x1;
 
+            double der = (nextY-line2[i].y)/(nextX-line2[i].x);
+            double der2 = (line2[i].y-prevY)/(line2[i].x-prevX);
 
+            double secderiv= (nextY-(2*line2[i].y)+prevY)/((line2[i].x-prevX)*(nextX-line2[i].x));
+            System.out.println(secderiv);
+            if (secderiv*negsecderiv <= 0){
+               System.out.println("Found the inflection point");
+               g.setColor(Color.ORANGE);
+               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), HEIGHT);
+            }
+            negsecderiv = secderiv;
+
+
+
+
+            int slopes = diffy / diffx;
             int slope = Math.abs(diffy / diffx);
             boolean isGrea;
+
+
+
+
+
 
 
 
