@@ -72,7 +72,7 @@ public class BasicGameApp implements Runnable {
       //b*(b*0.03)
       //-b*b*(b*0.0005)
 
-      returnValue = (Math.sin(b*0.05)*50);
+      returnValue = (-Math.sin(b*0.05)*50);
       return (returnValue);
    }
 
@@ -121,6 +121,8 @@ public class BasicGameApp implements Runnable {
       moveThings();  //move all the game objects
       render();  // paint the graphics
       pause(20); // sleep for 10 ms
+      rectangularAnimation();
+      areaUnderCurve();
 
    }
 
@@ -157,10 +159,11 @@ public class BasicGameApp implements Runnable {
       double negsecderiv = 1;
 
 
-      //For next time: add smoother points and more automatic color switches
       for (int i = 1; i < line2.length - 1; i++) {
 
          if (line2[i].x > -800 && line2[i].x < 700) {
+
+
 
             double prevY = line2[i - 1].y;
             double nextY = line2[i + 1].y;
@@ -180,11 +183,11 @@ public class BasicGameApp implements Runnable {
             double der2 = (line2[i].y-prevY)/(line2[i].x-prevX);
 
             double secderiv= (nextY-(2*line2[i].y)+prevY)/((line2[i].x-prevX)*(nextX-line2[i].x));
-            
-            if (secderiv*negsecderiv <= 0){
-               g.setColor(Color.ORANGE);
-               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), (int)(line2[i].y+shiftdown));
-            }
+
+//            if (secderiv*negsecderiv <= 0){
+//               g.setColor(Color.ORANGE);
+//               g.drawLine((int)(line2[i].x + shiftright), 0, (int)(line2[i].x + shiftright), (int)(line2[i].y+shiftdown));
+//            }
             negsecderiv = secderiv;
 
 
@@ -201,14 +204,14 @@ public class BasicGameApp implements Runnable {
 
 
 
-            if (currY > prevY && currY > nextY) {
-               g.setColor(Color.BLUE);
-               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
-            }
-            else if (currY < prevY && currY < nextY) {
-               g.setColor(Color.GREEN);
-               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
-            }
+//            if (currY > prevY && currY > nextY) {
+//               g.setColor(Color.BLUE);
+//               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
+//            }
+//            else if (currY < prevY && currY < nextY) {
+//               g.setColor(Color.GREEN);
+//               g.drawLine((int)(line2[i].x + shiftright), 700, (int)(line2[i].x + shiftright), (int)(line2[i].y + shiftdown));
+//            }
 
 
 
@@ -223,6 +226,9 @@ public class BasicGameApp implements Runnable {
             g.drawLine(x1, y1, x2, y2);
 
          }
+
+         g.setColor(Color.BLACK);
+         g.drawLine((int) ((500+2*Math.PI)/0.05), 0, (int) ((500+2*Math.PI)/0.05), 1000);
       /*g.setColor(new Color(0,200,100));
       for(int a= 0;a<line3.length;a++){
          g.fillRect((int)((line3[a].x)+shiftright),(int)(line3[a].y +shiftdown),4,4);
@@ -263,6 +269,43 @@ public class BasicGameApp implements Runnable {
       bufferStrategy = canvas.getBufferStrategy();
       canvas.requestFocus();
       System.out.println("DONE graphic setup");
+
+   }
+
+   public void areaUnderCurve(){
+      float z = Float.MIN_VALUE;
+      float area = 0;
+      float incriomentValue = 0.1F;
+
+      //System.out.println((2*Math.PI)/0.05);
+
+      for (float x = 500; x <= (500+((2*Math.PI))/0.05); x += incriomentValue){
+         area += Math.abs(((float) lineTaxi(x)) * incriomentValue);
+         //System.out.println(area);
+      }
+      System.out.println("Final estimated area is: " +area);
+   }
+
+
+   public void rectangularAnimation(){
+      Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+
+      g.setColor(new Color(0, 100, 255, 100));
+
+      for (int x = (int) (((2*Math.PI)/0.05)/2); x >= 1; x/=5){
+         int height = Math.abs((int) (lineTaxi(500+x)));
+         System.out.println("x value " + x);
+         g.fillRect(500, 300, x, height);
+         bufferStrategy.show();
+         pause(500);
+      }
+
+
+
+
+
+      g.dispose();
+
 
    }
 
