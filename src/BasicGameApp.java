@@ -275,11 +275,11 @@ public class BasicGameApp implements Runnable {
    public void areaUnderCurve(){
       float z = Float.MIN_VALUE;
       float area = 0;
-      float incriomentValue = 0.1F;
+      float incriomentValue = (float) ((((2*Math.PI))/0.05)/1000);
 
       //System.out.println((2*Math.PI)/0.05);
 
-      for (float x = 500; x <= (500+((2*Math.PI))/0.05); x += incriomentValue){
+      for (float x = 0; x <= (0+((2*Math.PI))/0.05); x += incriomentValue){
          area += Math.abs(((float) lineTaxi(x)) * incriomentValue);
          //System.out.println(area);
       }
@@ -292,12 +292,14 @@ public class BasicGameApp implements Runnable {
 
       g.setColor(new Color(0, 100, 255, 100));
 
+      //Need to find the highest point in the range of the rectangles x-axis
+
       for (int x = (int) (((2*Math.PI)/0.05)/2); x >= 1; x/=5){
          int height = Math.abs((int) (lineTaxi(500+x)));
          System.out.println("x value " + x);
-         g.fillRect(500, 300, x, height);
+         g.fillRect(500, 300, x, 50);
          bufferStrategy.show();
-         pause(500);
+         pause(200);
       }
 
 
